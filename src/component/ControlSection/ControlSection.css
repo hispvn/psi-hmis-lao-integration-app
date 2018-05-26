@@ -1,0 +1,7 @@
+.period-selector-container {
+    display: flex;
+}
+
+.period-selector-item {
+    margin: 10px;
+}

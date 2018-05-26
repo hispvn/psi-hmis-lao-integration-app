@@ -1,0 +1,22 @@
+{
+    "version": "0.1",
+    "name": "PSI Lao / MOH Integration",
+    "description": "app",
+    "launch_path": "index.html",
+    "appType": "APP",
+    "icons": {
+        "16": "/128.png",
+        "48": "/128.png",
+        "128": "/128.png"
+    },
+    "developer": {
+        "name": "Dzung - HISPVN",
+        "url": ""
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": ".."       
+        }
+    }
+}

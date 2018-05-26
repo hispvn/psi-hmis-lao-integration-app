@@ -1,0 +1,77 @@
+.event-table-container {
+    margin: 0 auto;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.header-item {
+    width: 11.1%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    cursor: pointer;
+}
+
+.synced {
+    background-color: #8fff87;
+}
+
+.rejected {
+    background-color: #ff9e9e;
+}
+
+.pending {
+    background-color: #9ec1ff;
+}
+
+.row-item {
+    width: 11.1%;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px
+}
+
+.tooltip-container {
+    min-height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    font-size: 20px;
+    text-align: center;
+    height: 50px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.fixed {
+    top: 47.5px;
+    position: fixed;
+    width: 99.2%;
+    z-index: 50000;
+}
+
+.loader-show {
+    opacity: 1 !important;
+    height: 10px;
+}
+
+.loader-hide {
+    opacity: 0 !important;
+    height: 10px;
+}
