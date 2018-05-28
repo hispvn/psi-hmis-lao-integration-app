@@ -10,6 +10,7 @@ import "./App.css";
 export default class App extends React.Component {
   constructor() {
     super();
+
     this.state = {
       statusFilter: {
         synced: false,
@@ -29,6 +30,12 @@ export default class App extends React.Component {
       endDate: "2017-08-05",
       events: [],
       filteredEvents: []
+    };
+
+    this._testResultFilterOptions = {
+      all: ["Pf", "Pv", "Mixed", "Negative"],
+      positive: ["Pf", "Pv", "Mixed"],
+      negative: ["Negative"]
     };
   }
 
@@ -64,7 +71,11 @@ export default class App extends React.Component {
 
       this.setState({
         statusCount: statusCount,
-        events: filterEvent(events, this.state.statusFilter),
+        events: filterEvent(
+          events,
+          this.state.statusFilter,
+          this._testResultFilterOptions[this.state.testResultFilter]
+        ),
         loader: "loader-hide"
       });
     });
@@ -82,13 +93,22 @@ export default class App extends React.Component {
 
     this.setState({
       statusFilter: statusFilter,
-      events: filterEvent(this.state.events, statusFilter)
+      events: filterEvent(
+        this.state.events,
+        statusFilter,
+        this._testResultFilterOptions[this.state.testResultFilter]
+      )
     });
   };
 
   handleSelectTestResult = event => {
     this.setState({
-      testResultFilter: event.target.value
+      testResultFilter: event.target.value,
+      events: filterEvent(
+        this.state.events,
+        this.state.statusFilter,
+        this._testResultFilterOptions[event.target.value]
+      )
     });
   };
 
