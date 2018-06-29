@@ -12,28 +12,9 @@ export default class EventTableSection extends React.Component {
   constructor() {
     super();
     this.state = {
-      events: [],
-      selected: []
+      events: []
     };
   }
-
-  handleClick = (event, id) => {
-    let { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else {
-      selected.splice(selectedIndex, 1);
-      newSelected = selected;
-    }
-    this.setState({
-      selected: newSelected
-    });
-  };
-
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   generateEventRows = () => {
     return this.props.events.map(event => {
@@ -62,19 +43,15 @@ export default class EventTableSection extends React.Component {
         default:
           break;
       }
-      const isSelected = this.isSelected(event.eventId);
+
       return (
         <Tooltip id="tooltip-bottom" title={tooltip} placement="left">
           <div
             className={`row ${rowClassName}`}
             style={{ display: event.showed ? "" : "none" }}
-            onClick={e => this.handleClick(e, event.eventId)}
           >
             <div className="row-item">
-              <FormControlLabel
-                control={<Checkbox checked={isSelected} />}
-                label=""
-              />
+              <FormControlLabel control={<Checkbox />} label="" />
             </div>
             <div className="row-item">{event.eventId}</div>
             <div className="row-item">{event.eventDate}</div>

@@ -1,24 +1,24 @@
 {
-  "name": "psi-hmis-integration-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "d2": "^25.3.1",
-    "d2-ui": "^27.0.0-5",
-    "d2-utilizr": "^0.2.15",
-    "lodash": "^4.17.4",
-    "material-ui": "^1.0.0-beta.47",
-    "moment": "^2.18.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4",
-    "rxjs": "^5.4.3"
-  },
-  "scripts": {
-    "init": "cd node_modules && cd d2-ui && npm install",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+	"name": "psi-hmis-integration-app",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"d2": "^25.3.1",
+		"d2-ui": "^27.0.0-5",
+		"d2-utilizr": "^0.2.15",
+		"lodash": "^4.17.4",
+		"material-ui": "^1.0.0-beta.47",
+		"moment": "^2.18.1",
+		"react": "^16.3.2",
+		"react-dom": "^16.3.2",
+		"react-scripts": "1.1.4",
+		"rxjs": "^5.4.3"
+	},
+	"scripts": {
+		"init": "cd node_modules && cd d2-ui && npm install",
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject"
+	}
 }
