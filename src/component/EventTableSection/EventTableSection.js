@@ -11,10 +11,9 @@ import "./EventTableSection.css";
 export default class EventTableSection extends React.Component {
   constructor() {
     super();
-    this.state = {
-      events: []
-    };
   }
+
+  isSelected = id => this.props.selected.indexOf(id) !== -1;
 
   generateEventRows = () => {
     return this.props.events.map(event => {
@@ -43,15 +42,19 @@ export default class EventTableSection extends React.Component {
         default:
           break;
       }
-
+      const isSelected = this.isSelected(event.eventId);
       return (
         <Tooltip id="tooltip-bottom" title={tooltip} placement="left">
           <div
             className={`row ${rowClassName}`}
             style={{ display: event.showed ? "" : "none" }}
+            onClick={e => this.props.handleEventClick(e, event.eventId)}
           >
             <div className="row-item">
-              <FormControlLabel control={<Checkbox />} label="" />
+              <FormControlLabel
+                control={<Checkbox checked={isSelected} />}
+                label=""
+              />
             </div>
             <div className="row-item">{event.eventId}</div>
             <div className="row-item">{event.eventDate}</div>
@@ -78,10 +81,7 @@ export default class EventTableSection extends React.Component {
             <div className="header-item">
               <FormControlLabel
                 control={
-                  <Checkbox
-                    checked={this.state.checkAll}
-                    onChange={this.handleCheckAll}
-                  />
+                  <Checkbox onChange={this.props.handleSelectedAllClick} />
                 }
                 label=""
               />
