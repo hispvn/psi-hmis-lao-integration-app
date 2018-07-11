@@ -3,8 +3,9 @@ import ControlSection from "./ControlSection/ControlSection";
 import FilterSection from "./FilterSection/FilterSection";
 import EventTableSection from "./EventTableSection/EventTableSection";
 import moment from "moment";
-import { getEvent } from "../util/store";
+import { getEvent, updateEvent } from "../util/store";
 import { filterEvent } from "../util/util";
+import Confirmation from "./ConfirmationModal";
 
 import "./App.css";
 export default class App extends React.Component {
@@ -29,7 +30,9 @@ export default class App extends React.Component {
       endDate: "2017-08-05",
       events: [],
       selected: [],
-      filteredEvents: []
+      filteredEvents: [],
+      confirmationShow: false,
+      updateEventSummaries: null
     };
 
     this._testResultFilterOptions = {
@@ -81,6 +84,21 @@ export default class App extends React.Component {
     });
   };
 
+  handleSubmitEvent = async () => {
+    let selectedEvents = this.state.events.filter(n =>
+      this.state.selected.includes(n.eventId)
+    );
+    let res = await updateEvent(selectedEvents);
+    this.setState({
+      updateEventSummaries: res
+      // confirmationShow: false
+    });
+  };
+
+  handleConfirm = () => {
+    this.setState({ confirmationShow: true });
+  };
+
   handleChangeDate = type => event => {
     this.setState({
       [type]: moment(event.target.value).format("YYYY-MM-DD")
@@ -113,9 +131,6 @@ export default class App extends React.Component {
   };
 
   handleSelectedAllClick = (event, checked) => {
-    console.log(
-      this.state.events.filter(n => n.showed === true).map(n => n.eventId)
-    );
     if (checked) {
       this.setState(state => ({
         selected: state.events
@@ -149,6 +164,12 @@ export default class App extends React.Component {
     });
   };
 
+  handleConfirmClose = () => {
+    this.setState({
+      confirmationShow: false
+    });
+  };
+
   render() {
     return (
       <div>
@@ -157,6 +178,7 @@ export default class App extends React.Component {
           endDate={this.state.endDate}
           handleChangeDate={this.handleChangeDate}
           handleGetEvent={this.handleGetEvent}
+          handleSubmitEvent={this.handleConfirm}
         />
         <FilterSection
           testResultFilter={this.state.testResultFilter}
@@ -174,6 +196,12 @@ export default class App extends React.Component {
           handleEventClick={this.handleEventClick}
           handleSelectedAllClick={this.handleSelectedAllClick}
           selected={this.state.selected}
+        />
+        <Confirmation
+          show={this.state.confirmationShow}
+          handleOnClose={this.handleConfirmClose}
+          handleOnConfirm={this.handleSubmitEvent}
+          resSummaries={this.state.updateEventSummaries}
         />
       </div>
     );
