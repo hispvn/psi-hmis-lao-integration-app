@@ -48,7 +48,7 @@ export default class EventTableSection extends React.Component {
           <div
             className={`row ${rowClassName}`}
             style={{ display: event.showed ? "" : "none" }}
-            onClick={e => this.props.handleEventClick(e, event.eventId)}
+            onClick={e => this.props.handleEventClick(e, event)}
           >
             <div className="row-item">
               <FormControlLabel

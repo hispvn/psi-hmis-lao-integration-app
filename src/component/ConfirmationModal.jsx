@@ -43,7 +43,8 @@ const styles = theme => ({
     right: 0,
     height: 200,
     backgroundColor: "#FFFFFF",
-    overflow: "auto"
+    overflow: "auto",
+    padding: 5
   }
 });
 
@@ -75,9 +76,15 @@ class Confirmation extends React.Component {
 
   render() {
     const { showLoader } = this.state;
-    const { show, classes, handleOnClose, resSummaries } = this.props;
+    const {
+      show,
+      classes,
+      handleOnClose,
+      resSummaries,
+      selectedEventsCount
+    } = this.props;
     let content;
-
+    
     content = (
       <div>
         <div className={classes.header}>
@@ -87,12 +94,17 @@ class Confirmation extends React.Component {
         </div>
 
         <div className={classes.content}>
-          <Typography gutterBottom>
-            <LinearProgress
-              style={{ opacity: !resSummaries && showLoader ? 1 : 0 }}
-            />
-            Click to get the full Modal experience!
-          </Typography>
+          <LinearProgress
+            style={{ opacity: !resSummaries && showLoader ? 1 : 0 }}
+          />
+
+          {Object.keys(selectedEventsCount).map(key => {
+            return (
+              <Typography gutterBottom variant="subheading">
+                {key}: {selectedEventsCount[key]}
+              </Typography>
+            );
+          })}
         </div>
 
         <div className={classes.footer}>

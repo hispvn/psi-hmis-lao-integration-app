@@ -32,7 +32,13 @@ export default class App extends React.Component {
       selected: [],
       filteredEvents: [],
       confirmationShow: false,
-      updateEventSummaries: null
+      updateEventSummaries: null,
+      selectedEventsCount: {
+        synced: 0,
+        noSynced: 0,
+        pending: 0,
+        rejected: 0
+      }
     };
 
     this._testResultFilterOptions = {
@@ -42,38 +48,43 @@ export default class App extends React.Component {
     };
   }
 
+  eventsCount = events => {
+    let statusCount = {
+      synced: 0,
+      noSynced: 0,
+      pending: 0,
+      rejected: 0
+    };
+
+    events.forEach(event => {
+      switch (event.syncStatus) {
+        case "Synced":
+          statusCount.synced += 1;
+          break;
+        case "Pendding":
+          statusCount.pending += 1;
+          break;
+        case "Rejected":
+          statusCount.rejected += 1;
+          break;
+        default:
+          statusCount.noSynced += 1;
+          break;
+      }
+    });
+    return statusCount;
+  };
+
   handleGetEvent = () => {
     this.setState({
       loader: "loader-show"
     });
 
     getEvent(this.state.startDate, this.state.endDate).then(events => {
-      let statusCount = {
-        synced: 0,
-        noSynced: 0,
-        pending: 0,
-        rejected: 0
-      };
-
-      events.forEach(event => {
-        switch (event.syncStatus) {
-          case "Synced":
-            statusCount.synced += 1;
-            break;
-          case "Pendding":
-            statusCount.pending += 1;
-            break;
-          case "Rejected":
-            statusCount.rejected += 1;
-            break;
-          default:
-            statusCount.noSynced += 1;
-            break;
-        }
-      });
+      // eventsCount(events);
 
       this.setState({
-        statusCount: statusCount,
+        statusCount: this.eventsCount(events),
         events: filterEvent(
           events,
           this.state.statusFilter,
@@ -131,24 +142,29 @@ export default class App extends React.Component {
   };
 
   handleSelectedAllClick = (event, checked) => {
+    let newSelected = this.state.events
+      .filter(n => n.showed === true)
+      .map(n => n.eventId);
+    let selectedEvents = this.state.events.filter(n =>
+      newSelected.includes(n.eventId)
+    );
     if (checked) {
-      this.setState(state => ({
-        selected: state.events
-          .filter(n => n.showed === true)
-          .map(n => n.eventId)
-      }));
+      this.setState({
+        selected: newSelected,
+        selectedEventsCount: this.eventsCount(selectedEvents)
+      });
       return;
     }
     this.setState({ selected: [] });
   };
 
-  handleEventClick = (event, id) => {
+  handleEventClick = (e, event) => {
     const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
+    const selectedIndex = selected.indexOf(event.eventId);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, event.eventId);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -159,14 +175,21 @@ export default class App extends React.Component {
         selected.slice(selectedIndex + 1)
       );
     }
+
+    let selectedEvents = this.state.events.filter(n =>
+      newSelected.includes(n.eventId)
+    );
+
     this.setState({
-      selected: newSelected
+      selected: newSelected,
+      selectedEventsCount: this.eventsCount(selectedEvents)
     });
   };
 
   handleConfirmClose = () => {
     this.setState({
-      confirmationShow: false
+      confirmationShow: false,
+      updateEventSummaries: null
     });
   };
 
@@ -202,6 +225,7 @@ export default class App extends React.Component {
           handleOnClose={this.handleConfirmClose}
           handleOnConfirm={this.handleSubmitEvent}
           resSummaries={this.state.updateEventSummaries}
+          selectedEventsCount={this.state.selectedEventsCount}
         />
       </div>
     );
