@@ -96,16 +96,29 @@ export default class App extends React.Component {
     });
   };
 
+  clear = () => {
+    this.setState({
+      selected: [],
+      selectedEventsCount: {
+        synced: 0,
+        noSynced: 0,
+        pending: 0,
+        rejected: 0
+      }
+    });
+  };
+
   handleSubmitEvent = async () => {
     let selectedEvents = this.state.events.filter(
       n =>
         this.state.selected.includes(n.eventId) && n.syncStatus == "No Synced"
     );
     let res = await updateEvent(selectedEvents, "Pendding");
+    this.handleGetEvent();
     this.setState({
       updateEventSummaries: res
     });
-    this.handleGetEvent();
+    this.clear();
   };
 
   handleAbortSubmitEvent = async () => {
@@ -113,10 +126,11 @@ export default class App extends React.Component {
       n => this.state.selected.includes(n.eventId) && n.syncStatus == "Pendding"
     );
     let res = await updateEvent(selectedEvents, "No Synced");
+    this.handleGetEvent();
     this.setState({
       updateEventSummaries: res
     });
-    this.handleGetEvent();
+    this.clear();
   };
 
   handleConfirm = type => {

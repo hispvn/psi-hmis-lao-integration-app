@@ -6,6 +6,7 @@ import Modal from "@material-ui/core/Modal";
 import { Done } from "@material-ui/icons";
 import { Button, LinearProgress } from "@material-ui/core";
 import { checkResponsesStatus, responsesErrors } from "../util/util";
+import { green, red } from "material-ui/colors";
 
 const styles = theme => ({
   paper: {
@@ -86,6 +87,13 @@ class Confirmation extends React.Component {
     this.props.handleOnConfirm();
   };
 
+  onClose = () => {
+    this.setState({
+      showLoader: false
+    });
+    this.props.handleOnClose();
+  };
+
   render() {
     const { showLoader } = this.state;
     const {
@@ -143,18 +151,32 @@ class Confirmation extends React.Component {
         </div>
 
         <div className={classes.footer}>
+          {type == "submit" ? (
+            <Button
+              variant="contained"
+              style={{ backgroundColor: green[700], color: "#ffffff" }}
+              className={classes.button}
+              onClick={this.confirmClick}
+              disabled={selectedEventsCount.noSynced <= 0 ? true : false}
+            >
+              Submit
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              style={{ backgroundColor: red[500], color: "#ffffff" }}
+              className={classes.button}
+              onClick={this.confirmClick}
+              disabled={selectedEventsCount.pending <= 0 ? true : false}
+            >
+              Abort Submit
+            </Button>
+          )}
+
           <Button
             variant="contained"
-            color={type == "submit" ? "primary" : "secondary"}
             className={classes.button}
-            onClick={this.confirmClick}
-          >
-            {type == "submit" ? "Submit" : "Abort Submit"}
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.button}
-            onClick={handleOnClose}
+            onClick={this.onClose}
           >
             Cancel
           </Button>
