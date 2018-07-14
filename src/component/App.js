@@ -38,7 +38,8 @@ export default class App extends React.Component {
         noSynced: 0,
         pending: 0,
         rejected: 0
-      }
+      },
+      submitType: null
     };
 
     this._testResultFilterOptions = {
@@ -96,18 +97,33 @@ export default class App extends React.Component {
   };
 
   handleSubmitEvent = async () => {
-    let selectedEvents = this.state.events.filter(n =>
-      this.state.selected.includes(n.eventId)
+    let selectedEvents = this.state.events.filter(
+      n =>
+        this.state.selected.includes(n.eventId) && n.syncStatus == "No Synced"
     );
-    let res = await updateEvent(selectedEvents);
+    let res = await updateEvent(selectedEvents, "Pendding");
     this.setState({
       updateEventSummaries: res
-      // confirmationShow: false
     });
+    this.handleGetEvent();
   };
 
-  handleConfirm = () => {
-    this.setState({ confirmationShow: true });
+  handleAbortSubmitEvent = async () => {
+    let selectedEvents = this.state.events.filter(
+      n => this.state.selected.includes(n.eventId) && n.syncStatus == "Pendding"
+    );
+    let res = await updateEvent(selectedEvents, "No Synced");
+    this.setState({
+      updateEventSummaries: res
+    });
+    this.handleGetEvent();
+  };
+
+  handleConfirm = type => {
+    this.setState({
+      submitType: type,
+      confirmationShow: true
+    });
   };
 
   handleChangeDate = type => event => {
@@ -201,7 +217,9 @@ export default class App extends React.Component {
           endDate={this.state.endDate}
           handleChangeDate={this.handleChangeDate}
           handleGetEvent={this.handleGetEvent}
-          handleSubmitEvent={this.handleConfirm}
+          handleSubmitEvent={e => this.handleConfirm("submit")}
+          handleAbortSubmitEvent={e => this.handleConfirm("abortSubmit")}
+          selectedEventsCount={this.state.selectedEventsCount}
         />
         <FilterSection
           testResultFilter={this.state.testResultFilter}
@@ -223,7 +241,12 @@ export default class App extends React.Component {
         <Confirmation
           show={this.state.confirmationShow}
           handleOnClose={this.handleConfirmClose}
-          handleOnConfirm={this.handleSubmitEvent}
+          handleOnConfirm={
+            this.state.submitType == "submit"
+              ? this.handleSubmitEvent
+              : this.handleAbortSubmitEvent
+          }
+          type={this.state.submitType}
           resSummaries={this.state.updateEventSummaries}
           selectedEventsCount={this.state.selectedEventsCount}
         />

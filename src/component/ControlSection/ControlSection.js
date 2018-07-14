@@ -48,8 +48,12 @@ export default class ControlSection extends React.Component {
               width: 150,
               fontWeight: "bold",
               color: "white",
-              backgroundColor: green[700]
+              backgroundColor:
+                this.props.selectedEventsCount.noSynced > 0 ? green[700] : ""
             }}
+            disabled={
+              this.props.selectedEventsCount.noSynced > 0 ? false : true
+            }
             onClick={this.props.handleSubmitEvent}
           >
             SUBMIT
@@ -62,8 +66,11 @@ export default class ControlSection extends React.Component {
               width: 150,
               fontWeight: "bold",
               color: "white",
-              backgroundColor: red[500]
+              backgroundColor:
+                this.props.selectedEventsCount.pending > 0 ? red[500] : ""
             }}
+            disabled={this.props.selectedEventsCount.pending > 0 ? false : true}
+            onClick={this.props.handleAbortSubmitEvent}
           >
             ABORT SUBMIT
           </Button>

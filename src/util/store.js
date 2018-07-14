@@ -45,8 +45,7 @@ const getEvent = (startDate, endDate) => {
 };
 
 const push = (endpoint, payload) => {
-  console.log(JSON.stringify(payload));
-  return fetch(`${baseUrl}/api/${endpoint}?dryRun=true`, {
+  return fetch(`${baseUrl}/api/${endpoint}?dryRun=false`, {
     method: "POST",
     credentials: credentials,
     headers: {
@@ -59,8 +58,8 @@ const push = (endpoint, payload) => {
     .then(json => json);
 };
 
-const updateEvent = events => {
-  let payload = transformToDhis2(events);
+const updateEvent = (events, type) => {
+  let payload = transformToDhis2(events, type);
   return push("events", payload);
 };
 
@@ -102,7 +101,7 @@ const transformFromDhis2 = events => {
   return outputEvents;
 };
 
-const transformToDhis2 = events => {
+const transformToDhis2 = (events, type) => {
   let pushEvents = {
     events: []
   };
@@ -120,7 +119,7 @@ const transformToDhis2 = events => {
     Object.keys(metadata).forEach(prop => {
       let dataValue = {
         dataElement: prop,
-        value: event[metadata[prop]]
+        value: prop == "MLbNyweMihi" ? type : event[metadata[prop]]
       };
       transformedEvent.dataValues.push(dataValue);
     });

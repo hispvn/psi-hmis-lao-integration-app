@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
+import { Done } from "@material-ui/icons";
 import { Button, LinearProgress } from "@material-ui/core";
+import { checkResponsesStatus, responsesErrors } from "../util/util";
 
 const styles = theme => ({
   paper: {
@@ -45,6 +47,16 @@ const styles = theme => ({
     backgroundColor: "#FFFFFF",
     overflow: "auto",
     padding: 5
+  },
+  icon: {
+    color: "#4cd137",
+    fontSize: 16,
+    paddingRight: 5
+  },
+  vl: {
+    borderLeft: "6px solid green",
+    height: 500,
+    marginLeft: 10
   }
 });
 
@@ -81,10 +93,10 @@ class Confirmation extends React.Component {
       classes,
       handleOnClose,
       resSummaries,
-      selectedEventsCount
+      selectedEventsCount,
+      type
     } = this.props;
     let content;
-    
     content = (
       <div>
         <div className={classes.header}>
@@ -97,24 +109,47 @@ class Confirmation extends React.Component {
           <LinearProgress
             style={{ opacity: !resSummaries && showLoader ? 1 : 0 }}
           />
-
-          {Object.keys(selectedEventsCount).map(key => {
-            return (
-              <Typography gutterBottom variant="subheading">
-                {key}: {selectedEventsCount[key]}
+          <div style={{ display: "flex" }}>
+            <div style={{ minWidth: 125 }}>
+              {Object.keys(selectedEventsCount).map(key => {
+                return (
+                  <Typography gutterBottom variant="subheading" style={{}}>
+                    <Done
+                      className={classes.icon}
+                      style={{
+                        opacity:
+                          resSummaries && checkResponsesStatus(resSummaries)
+                            ? 1
+                            : 0
+                      }}
+                    />
+                    {key}: {selectedEventsCount[key]}
+                  </Typography>
+                );
+              })}
+            </div>
+            <div className={classes.vl} />
+            <div style={{ marginLeft: 5 }}>
+              <Typography gutterBottom style={{ color: "#DC0037" }}>
+                {type == "submit"
+                  ? 'This action only affect "noSync" events.'
+                  : 'This action only affect "pending" events.'}
               </Typography>
-            );
-          })}
+              {responsesErrors(resSummaries).map(res => {
+                return res.description;
+              })}
+            </div>
+          </div>
         </div>
 
         <div className={classes.footer}>
           <Button
             variant="contained"
-            color="primary"
+            color={type == "submit" ? "primary" : "secondary"}
             className={classes.button}
             onClick={this.confirmClick}
           >
-            Submit
+            {type == "submit" ? "Submit" : "Abort Submit"}
           </Button>
           <Button
             variant="contained"
