@@ -1,10 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Modal from "@material-ui/core/Modal";
 import { Done } from "@material-ui/icons";
-import { Button, LinearProgress } from "@material-ui/core";
+import {
+  Button,
+  LinearProgress,
+  DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  ListItem
+} from "@material-ui/core";
 import { checkResponsesStatus, responsesErrors } from "../util/util";
 import { green, red } from "material-ui/colors";
 
@@ -26,7 +32,7 @@ const styles = theme => ({
     left: 0,
     right: 0,
     height: 50,
-    backgroundColor: "#abcdef",
+    backgroundColor: "rgb(39, 102, 150)",
     padding: 5
   },
   footer: {
@@ -35,7 +41,7 @@ const styles = theme => ({
     left: 0,
     right: 0,
     height: 50,
-    backgroundColor: "#abcdef",
+    backgroundColor: "rgb(39, 102, 150)",
     textAlign: "right"
   },
   content: {
@@ -55,8 +61,9 @@ const styles = theme => ({
     paddingRight: 5
   },
   vl: {
-    borderLeft: "6px solid green",
-    height: 500,
+    borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
+    height: "auto",
+    paddingTop: -20,
     marginLeft: 10
   }
 });
@@ -107,16 +114,19 @@ class Confirmation extends React.Component {
     let content;
     content = (
       <div>
-        <div className={classes.header}>
-          <Typography gutterBottom variant="display1">
-            Review
-          </Typography>
-        </div>
+        <LinearProgress
+          style={{ opacity: !resSummaries && showLoader ? 1 : 0 }}
+        />
+        <DialogTitle
+          gutterBottom
+          variant="display1"
+          style={{ color: "#ffffff" }}
+        >
+          Summaries
+          <ListItem divider />
+        </DialogTitle>
 
-        <div className={classes.content}>
-          <LinearProgress
-            style={{ opacity: !resSummaries && showLoader ? 1 : 0 }}
-          />
+        <DialogContent>
           <div style={{ display: "flex" }}>
             <div style={{ minWidth: 125 }}>
               {Object.keys(selectedEventsCount).map(key => {
@@ -148,9 +158,9 @@ class Confirmation extends React.Component {
               })}
             </div>
           </div>
-        </div>
-
-        <div className={classes.footer}>
+        </DialogContent>
+        <ListItem divider />
+        <DialogActions>
           {type == "submit" ? (
             <Button
               variant="contained"
@@ -185,18 +195,20 @@ class Confirmation extends React.Component {
           >
             Cancel
           </Button>
-        </div>
+        </DialogActions>
       </div>
     );
 
     return (
-      <div>
-        <Modal open={show}>
-          <div className={classes.paper} style={getModalStyle()}>
-            {content}
-          </div>
-        </Modal>
-      </div>
+      <Dialog
+        open={show}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        {/* <div className={classes.paper} style={getModalStyle()}> */}
+        {content}
+        {/* </div> */}
+      </Dialog>
     );
   }
 }

@@ -48,7 +48,7 @@ export default class App extends React.Component {
       negative: ["Negative"]
     };
   }
-  
+
   eventsCount = events => {
     let statusCount = {
       synced: 0,
