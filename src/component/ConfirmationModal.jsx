@@ -140,7 +140,7 @@ class Confirmation extends React.Component {
             <div style={{ marginLeft: 5 }}>
               <Typography gutterBottom style={{ color: "#DC0037" }}>
                 {type == "submit"
-                  ? 'This action only affect "noSync" events.'
+                  ? 'This action only affect "noSync/rejected" events.'
                   : 'This action only affect "pending" events.'}
               </Typography>
               {responsesErrors(resSummaries).map(res => {
@@ -157,7 +157,12 @@ class Confirmation extends React.Component {
               style={{ backgroundColor: green[700], color: "#ffffff" }}
               className={classes.button}
               onClick={this.confirmClick}
-              disabled={selectedEventsCount.noSynced <= 0 ? true : false}
+              disabled={
+                selectedEventsCount.noSynced <= 0 &&
+                selectedEventsCount.rejected <= 0
+                  ? true
+                  : false
+              }
             >
               Submit
             </Button>

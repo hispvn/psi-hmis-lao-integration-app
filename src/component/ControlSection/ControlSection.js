@@ -7,6 +7,7 @@ import "./ControlSection.css";
 
 export default class ControlSection extends React.Component {
   render() {
+    const { noSynced, rejected } = this.props.selectedEventsCount;
     return (
       <div className="period-selector-container">
         <div className="period-selector-item">
@@ -48,12 +49,9 @@ export default class ControlSection extends React.Component {
               width: 150,
               fontWeight: "bold",
               color: "white",
-              backgroundColor:
-                this.props.selectedEventsCount.noSynced > 0 ? green[700] : ""
+              backgroundColor: (noSynced || rejected) > 0 ? green[700] : ""
             }}
-            disabled={
-              this.props.selectedEventsCount.noSynced > 0 ? false : true
-            }
+            disabled={(noSynced || rejected) > 0 ? false : true}
             onClick={this.props.handleSubmitEvent}
           >
             SUBMIT

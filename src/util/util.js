@@ -19,6 +19,7 @@ const filterEvent = (events, statusFilter, testResultFilter) => {
         break;
     }
   });
+  events = events.filter(e => e.result != "");
   return events;
 };
 

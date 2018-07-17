@@ -10,12 +10,6 @@ import "./FilterSection.css";
 export default class FilterSection extends React.Component {
   constructor() {
     super();
-    this.state = {
-      synced: 0,
-      noSynced: 0,
-      rejected: 0,
-      pending: 0
-    };
   }
 
   render() {
@@ -73,7 +67,10 @@ export default class FilterSection extends React.Component {
           </FormGroup>
         </div>
         <div>
-          <FormControl style={{ marginLeft: 50, minWidth: 275 }}>
+          <FormControl
+            style={{ marginLeft: 50, minWidth: 275 }}
+            disabled={this.props.eventCount <= 0}
+          >
             <InputLabel htmlFor="test-result-filer">
               Filter by test result
             </InputLabel>

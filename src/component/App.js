@@ -48,7 +48,7 @@ export default class App extends React.Component {
       negative: ["Negative"]
     };
   }
-
+  
   eventsCount = events => {
     let statusCount = {
       synced: 0,
@@ -82,15 +82,14 @@ export default class App extends React.Component {
     });
 
     getEvent(this.state.startDate, this.state.endDate).then(events => {
-      // eventsCount(events);
-
+      let eventsFiltered = filterEvent(
+        events,
+        this.state.statusFilter,
+        this._testResultFilterOptions[this.state.testResultFilter]
+      );
       this.setState({
-        statusCount: this.eventsCount(events),
-        events: filterEvent(
-          events,
-          this.state.statusFilter,
-          this._testResultFilterOptions[this.state.testResultFilter]
-        ),
+        statusCount: this.eventsCount(eventsFiltered),
+        events: eventsFiltered,
         loader: "loader-hide"
       });
     });
@@ -111,7 +110,8 @@ export default class App extends React.Component {
   handleSubmitEvent = async () => {
     let selectedEvents = this.state.events.filter(
       n =>
-        this.state.selected.includes(n.eventId) && n.syncStatus == "No Synced"
+        this.state.selected.includes(n.eventId) &&
+        (n.syncStatus == "No Synced" || n.syncStatus == "Rejected")
     );
     let res = await updateEvent(selectedEvents, "Pendding");
     this.handleGetEvent();
@@ -244,9 +244,10 @@ export default class App extends React.Component {
           rejected={this.state.statusFilter.rejected}
           handleSelectStatus={this.handleSelectStatus}
           handleSelectTestResult={this.handleSelectTestResult}
+          eventCount={this.state.events}
         />
         <EventTableSection
-          events={this.state.events}
+          events={this.state.events.filter(e => e.showed == true)}
           loader={this.state.loader}
           handleEventClick={this.handleEventClick}
           handleSelectedAllClick={this.handleSelectedAllClick}
