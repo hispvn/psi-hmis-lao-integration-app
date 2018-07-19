@@ -17,7 +17,7 @@ const getEvent = (startDate, endDate) => {
       headers: {
         Authorization: authorization
       }
-    }
+    } 
   )
     .then(result => result.json())
     .then(json => {

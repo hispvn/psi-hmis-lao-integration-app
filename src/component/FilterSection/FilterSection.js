@@ -1,9 +1,14 @@
 import React from "react";
-import { FormGroup, FormControlLabel, FormControl } from "material-ui/Form";
-import Checkbox from "material-ui/Checkbox";
-import Input, { InputLabel } from "material-ui/Input";
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
+import {
+  FormGroup,
+  FormControlLabel,
+  FormControl,
+  Checkbox,
+  Input,
+  InputLabel,
+  Select,
+  MenuItem
+} from "@material-ui/core";
 
 import "./FilterSection.css";
 

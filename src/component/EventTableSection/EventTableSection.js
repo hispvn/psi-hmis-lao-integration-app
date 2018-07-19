@@ -1,9 +1,12 @@
 import React from "react";
-import { LinearProgress } from "material-ui/Progress";
-import { FormControlLabel } from "material-ui/Form";
-import { TablePagination, Paper } from "@material-ui/core";
-import Checkbox from "material-ui/Checkbox";
-import Tooltip from "material-ui/Tooltip";
+import {
+  TablePagination,
+  Paper,
+  LinearProgress,
+  FormControlLabel,
+  Tooltip,
+  Checkbox
+} from "@material-ui/core";
 import moment from "moment";
 
 import "./EventTableSection.css";
@@ -11,27 +14,15 @@ import "./EventTableSection.css";
 export default class EventTableSection extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      page: 0,
-      rowsPerPage: 50
-    };
   }
 
   isSelected = id => this.props.selected.indexOf(id) !== -1;
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
-  };
-
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
-
   generateEventRows = () => {
     return this.props.events
       .slice(
-        this.state.page * this.state.rowsPerPage,
-        this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+        this.props.page * this.props.rowsPerPage,
+        this.props.page * this.props.rowsPerPage + this.props.rowsPerPage
       )
       .map(event => {
         let rowClassName = "";
@@ -88,7 +79,7 @@ export default class EventTableSection extends React.Component {
   };
 
   render() {
-    const { rowsPerPage, page } = this.state;
+    const { rowsPerPage, page } = this.props;
     return (
       <div className="event-table-container">
         <div>
@@ -128,8 +119,8 @@ export default class EventTableSection extends React.Component {
               nextIconButtonProps={{
                 "aria-label": "Next Page"
               }}
-              onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              onChangePage={this.props.handleChangePage}
+              onChangeRowsPerPage={this.props.handleChangeRowsPerPage}
               rowsPerPageOptions={[5, 10, 25, 50, 100]}
             />
           </Paper>

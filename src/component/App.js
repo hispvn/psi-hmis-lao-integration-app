@@ -39,7 +39,10 @@ export default class App extends React.Component {
         pending: 0,
         rejected: 0
       },
-      submitType: null
+      submitType: null,
+
+      page: 0,
+      rowsPerPage: 50
     };
 
     this._testResultFilterOptions = {
@@ -174,6 +177,10 @@ export default class App extends React.Component {
   handleSelectedAllClick = (event, checked) => {
     let newSelected = this.state.events
       .filter(n => n.showed === true)
+      .slice(
+        this.state.page * this.state.rowsPerPage,
+        this.state.page * this.state.rowsPerPage + this.state.rowsPerPage
+      )
       .map(n => n.eventId);
     let selectedEvents = this.state.events.filter(n =>
       newSelected.includes(n.eventId)
@@ -223,6 +230,14 @@ export default class App extends React.Component {
     });
   };
 
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
   render() {
     return (
       <div>
@@ -252,6 +267,10 @@ export default class App extends React.Component {
           handleEventClick={this.handleEventClick}
           handleSelectedAllClick={this.handleSelectedAllClick}
           selected={this.state.selected}
+          page={this.state.page}
+          rowsPerPage={this.state.rowsPerPage}
+          handleChangePage={this.handleChangePage}
+          handleChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
         <Confirmation
           show={this.state.confirmationShow}

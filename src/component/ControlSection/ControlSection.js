@@ -1,7 +1,6 @@
 import React from "react";
-import TextField from "material-ui/TextField";
-import Button from "material-ui/Button";
-import { green, red } from "material-ui/colors";
+import { Button, TextField } from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
 
 import "./ControlSection.css";
 

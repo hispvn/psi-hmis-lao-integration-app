@@ -12,7 +12,7 @@ import {
   ListItem
 } from "@material-ui/core";
 import { checkResponsesStatus, responsesErrors } from "../util/util";
-import { green, red } from "material-ui/colors";
+import { green, red } from "@material-ui/core/colors";
 
 const styles = theme => ({
   paper: {

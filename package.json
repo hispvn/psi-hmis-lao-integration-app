@@ -1,26 +1,64 @@
 {
-	"name": "psi-hmis-integration-app",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@material-ui/core": "^1.3.1",
-		"@material-ui/icons": "^1.1.0",
-		"d2": "^25.3.1",
-		"d2-ui": "^27.0.0-5",
-		"d2-utilizr": "^0.2.15",
-		"lodash": "^4.17.4",
-		"material-ui": "^1.0.0-beta.47",
-		"moment": "^2.18.1",
-		"react": "^16.3.2",
-		"react-dom": "^16.3.2",
-		"react-scripts": "1.1.4",
-		"rxjs": "^5.4.3"
-	},
-	"scripts": {
-		"init": "cd node_modules && cd d2-ui && npm install",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
-	}
+  "name": "psi-hmis-integration-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^1.3.1",
+    "@material-ui/icons": "^1.1.0",
+    "d2": "^25.3.1",
+    "d2-ui": "^27.0.0-5",
+    "d2-utilizr": "^0.2.15",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "rxjs": "^5.4.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "bestzip": "^1.1.4",
+    "css-loader": "^0.28.11",
+    "d2-manifest": "^1.0.0",
+    "rimraf": "^2.6.2",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.4",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "scripts": {
+    "init": "cd node_modules && cd d2-ui && npm install",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "postbuild": "d2-manifest package.json build/manifest.webapp && bestzip build/PSI-Integration-App.zip build/*",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "manifest.webapp": {
+    "version": "0.1",
+    "name": "PSI Lao / MOH Integration",
+    "description": "app",
+    "launch_path": "index.html",
+    "appType": "APP",
+    "icons": {
+      "16": "/128.png",
+      "48": "/128.png",
+      "128": "/128.png"
+    },
+    "developer": {
+      "name": "Dzung - HISPVN",
+      "url": ""
+    },
+    "default_locale": "en",
+    "activities": {
+      "dhis": {
+        "href": ".."
+      }
+    }
+  }
 }
