@@ -35,10 +35,11 @@
     "init": "cd node_modules && cd d2-ui && npm install",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "d2-manifest package.json build/manifest.webapp && bestzip build/PSI-Integration-App.zip build/*",
+    "postbuild": "d2-manifest package.json build/manifest.webapp && cd build && bestzip ./PSI-Integration-App.zip *",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
+  "homepage": ".",
   "manifest.webapp": {
     "version": "0.1",
     "name": "PSI Lao / MOH Integration",
@@ -46,9 +47,9 @@
     "launch_path": "index.html",
     "appType": "APP",
     "icons": {
-      "16": "/128.png",
-      "48": "/128.png",
-      "128": "/128.png"
+      "16": "128.png",
+      "48": "128.png",
+      "128": "128.png"
     },
     "developer": {
       "name": "Dzung - HISPVN",
